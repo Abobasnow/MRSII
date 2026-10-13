@@ -1,4 +1,3 @@
-```markdown
 # SUNС Progress
 
 Платформа онлайн-обучения: курсы, уроки, домашние задания, чат между студентами и преподавателями.
@@ -13,6 +12,9 @@
 - [Стек](#стек)
 - [Структура проекта](#структура-проекта)
 - [Схема базы данных](#схема-базы-данных)
+- [Установка и запуск](#установка-и-запуск)
+- [API](#api)
+- [Разработка](#разработка)
 
 ---
 
@@ -24,7 +26,7 @@ SUNС Progress — учебная платформа для организаци
 - **Преподаватели** — создают курсы, темы, уроки, проверяют ДЗ, оставляют материалы.
 - **Администраторы** — управляют пользователями и ролями.
 
-Проект разрабатывается в рамках спринта. Текущий статус — **спринт 1**: базовая инфраструктура и API авторизации.
+Текущий статус — **спринт 1**: базовая инфраструктура и API авторизации.
 
 ---
 
@@ -32,13 +34,12 @@ SUNС Progress — учебная платформа для организаци
 
 ### Backend
 
-- **Python 3.14** (managed через Python Install Manager)
+- **Python 3.14** — managed через Python Install Manager
 - **FastAPI** — веб-фреймворк
 - **SQLAlchemy 2.1** — ORM
 - **psycopg 3** — драйвер PostgreSQL
 - **Pydantic v2** — валидация данных
-- **passlib[bcrypt]** — хеширование паролей
-- **python-jose** — работа с JWT (в бэклоге)
+- **passlib** — хеширование паролей
 - **Uvicorn** — ASGI-сервер
 
 ### База данных
@@ -46,50 +47,73 @@ SUNС Progress — учебная платформа для организаци
 - **PostgreSQL 17**
 - 9 таблиц: `roles`, `users`, `courses`, `topics`, `user_progress`, `lessons`, `homework_submissions`, `messages`, `materials`
 
+### Frontend (в отдельной ветке `sunc-frontend`)
+
+- **React 18** + **TypeScript**
+- **Vite**
+- **React Router**
+- **Zustand**
+- **Axios**
+
 ### Инструменты
 
 - **Git** + **GitHub**
-- **PyCharm** / **VS Code**
-- **pgAdmin 4** / **Database tool в PyCharm**
+- **PyCharm**
+- **pgAdmin 4** / Database tool в PyCharm
 - **Kaiten** — управление задачами
 
 ---
-
 ## Структура проекта
+````
 sunc-backend/
-├── app/
-│ ├── init.py
-│ ├── main.py # точка входа FastAPI
-│ ├── config.py # настройки из .env
-│ ├── database.py # SQLAlchemy engine + сессии
-│ ├── models/ # SQLAlchemy-модели
-│ │ ├── init.py
-│ │ ├── user.py # User + Role
-│ │ └── material.py # Material
-│ ├── schemas/ # Pydantic-схемы (DTO)
-│ │ ├── init.py
-│ │ ├── user.py
-│ │ └── material.py
-│ ├── repositories/ # слой доступа к данным (в бэклоге)
-│ ├── routers/ # эндпоинты
-│ │ ├── init.py
-│ │ ├── auth.py # /api/auth/register, /api/auth/login
-│ │ └── materials.py # /api/materials
-│ └── security/
-│ ├── init.py
-│ └── utils.py # хеширование паролей
-├── db/
-│ └── schema.sql # SQL-скрипт создания схемы БД
-├── .env # секреты (НЕ коммитится)
-├── .gitignore
-├── requirements.txt
-└── README.md
 
+├── app/                     # корневой пакет приложения
+│   ├── __init__.py          # делает папку Python-пакетом
+│   ├── main.py              # точка входа FastAPI, подключение роутеров
+│   ├── config.py            # настройки из .env (pydantic-settings)
+│   ├── database.py          # SQLAlchemy engine, SessionLocal, Base, get_db
+│   │
+│   ├── models/              # SQLAlchemy-модели (маппинг на таблицы БД)
+│   │   ├── __init__.py      # экспорт всех моделей
+│   │   ├── user.py          # User + Role
+│   │   └── material.py      # Material (учебный материал)
+│   │
+│   ├── schemas/             # Pydantic-схемы (DTO для запросов/ответов)
+│   │   ├── __init__.py
+│   │   ├── user.py          # UserCreate, UserResponse
+│   │   └── material.py      # MaterialCreate, MaterialResponse
+│   │
+│   ├── repositories/        # слой доступа к данным (в бэклоге)
+│   │   └── __init__.py
+│   │
+│   ├── routers/             # HTTP-эндпоинты (FastAPI APIRouter)
+│   │   ├── __init__.py
+│   │   ├── auth.py          # POST /api/auth/register, /api/auth/login
+│   │   └── materials.py     # POST/GET /api/materials
+│   │
+│   └── security/            # хеширование паролей, JWT (в бэклоге)
+│       ├── __init__.py
+│       └── utils.py         # get_password_hash, verify_password
+│
+├── db/
+│   └── schema.sql           # SQL-скрипт создания схемы БД (9 таблиц + индексы)
+│
+├── docs/
+│   └── images/
+│       └── er-diagram.png   # ER-диаграмма базы данных
+│
+├── .env                     # секреты и переменные окружения (НЕ коммитится)
+├── .gitignore               # исключения для Git (.venv, .env, __pycache__)
+├── requirements.txt         # зависимости Python
+└── README.md                # этот файл
+````
 ---
+
 
 ## Схема базы данных
 
 9 таблиц, приведены к 3-й нормальной форме.
+
 ![ER-диаграмма базы данных](docs/images/er-diagram.png)
 
 ### Связи
@@ -115,11 +139,3 @@ sunc-backend/
 - `UNIQUE`-ограничения защищают от дублей.
 
 Полная схема — в [`db/schema.sql`](db/schema.sql).
-
----
-
-
-## Контакты
-
-- **Репозиторий:** [github.com/Abobasnow/MRSII](https://github.com/Abobasnow/MRSII)
-- **Проект:** SUNС Progress, ПМИ
