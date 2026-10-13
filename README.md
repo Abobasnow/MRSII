@@ -1,19 +1,19 @@
 # React + TypeScript + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Этот шаблон предоставляет минимальную настройку для запуска React в Vite с поддержкой HMR и базовыми правилами ESLint.
 
-Currently, two official plugins are available:
+В настоящее время доступны два официальных плагина:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) использует [Oxc](https://oxc.rs)
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) использует [SWC](https://swc.rs/)
 
 ## React Compiler
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+React Compiler не включен в этот шаблон из-за его влияния на производительность в режиме разработки и при сборке. Чтобы добавить его, обратитесь к [этой документации](https://react.dev/learn/react-compiler/installation).
 
-## Expanding the ESLint configuration
+## Расширение конфигурации ESLint
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+Если вы разрабатываете приложение для продакшена, мы рекомендуем обновить конфигурацию, чтобы включить правила линтинга с учетом типов:
 
 ```js
 export default defineConfig([
@@ -44,7 +44,7 @@ export default defineConfig([
 
 ```
 
-You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
+Вы также можете установить [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) и [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) для получения правил линтинга, специфичных для React:
 
 ```js
 // eslint.config.js
