@@ -6,8 +6,7 @@ from app.database import get_db
 from app.models.material import Material
 from app.schemas.material import MaterialCreate, MaterialResponse
 
-router = APIRouter(prefix="/materials", tags=["Materials"])
-
+router = APIRouter(prefix="/api/materials", tags=["Materials"])
 
 @router.post("", response_model=MaterialResponse, status_code=status.HTTP_201_CREATED)
 def create_material(

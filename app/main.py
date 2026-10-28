@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.routers import auth, materials
+from app.routers import auth, materials, assignments
 
 app = FastAPI(
     title="SUNC Progress API",
@@ -19,7 +19,7 @@ app.add_middleware(
 
 app.include_router(auth.router)
 app.include_router(materials.router)
-
+app.include_router(assignments.router)
 @app.get("/")
 def root():
     return {
